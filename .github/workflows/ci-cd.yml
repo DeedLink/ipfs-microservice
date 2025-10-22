@@ -21,7 +21,7 @@ jobs:
       run: yarn install --frozen-lockfile
 
     - name: Build Docker Image
-      run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/ipfs-service:latest .
+      run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/ipfs-microservice:latest .
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
@@ -30,7 +30,7 @@ jobs:
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
     - name: Push Docker Image
-      run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/ipfs-service:latest
+      run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/ipfs-microservice:latest
     
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v0.1.5
