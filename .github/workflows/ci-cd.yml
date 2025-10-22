@@ -22,14 +22,6 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
 
-    - name: Update .env file
-      run: |
-        mkdir -p ipfs-microservice
-        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ipfs-microservice/.env
-        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ipfs-microservice/.env
-        echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ipfs-microservice/.env
-        echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> ipfs-microservice/.env
-
     - name: Clone or Update ipfs-microservice Repository
       run: |
         if [ ! -d "ipfs-microservice" ]; then
@@ -41,6 +33,15 @@ jobs:
           cd ..
         fi
 
+    - name: Add .env to ipfs-microservice
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> ipfs-microservice/.env
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ipfs-microservice/.env
+        echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> ipfs-microservice/.env
+        echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> ipfs-microservice/.env
+
+    - name: Run Docker Compose
+      run: |
         cd ipfs-microservice
         docker compose pull
         docker compose up -d --remove-orphans
@@ -66,11 +67,9 @@ jobs:
         script: |
           cd /home/ubuntu/deedlink-deployments || mkdir -p /home/ubuntu/deedlink-deployments
           cd /home/ubuntu/deedlink-deployments
-          
           if [ ! -d "ipfs-microservice" ]; then
             git clone https://github.com/DeedLink/ipfs-microservice.git ipfs-microservice
           fi
-          
           cd ipfs-microservice
           git fetch origin
           git reset --hard origin/master
