@@ -20,6 +20,29 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
 
+    - name: Update .env file
+      run: |
+        echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
+        echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
+        echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
+        echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
+
+    - name: Clone ipfs-microservice Repository/ Update repo
+      run: |
+        if [ ! -d "ipfs-microservice" ]; then
+          git clone "git clone https://github.com/DeedLink/ipfs-microservice.git ipfs-microservice" ipfs-microservice
+        else
+          cd ipfs-microservice
+          git reset --hard
+          git pull origin master
+          cd ..
+        fi
+          cd ipfs-microservice
+          git reset --hard
+          git pull origin main
+          docker compose pull
+          docker compose up -d --remove-orphans
+
     - name: Build Docker Image
       run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/ipfs-microservice:latest .
 
