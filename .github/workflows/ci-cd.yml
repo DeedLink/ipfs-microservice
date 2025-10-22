@@ -30,7 +30,7 @@ jobs:
     - name: Clone ipfs-microservice Repository/ Update repo
       run: |
         if [ ! -d "ipfs-microservice" ]; then
-          git clone "git clone https://github.com/DeedLink/ipfs-microservice.git ipfs-microservice" ipfs-microservice
+          git clone https://github.com/DeedLink/ipfs-microservice.git ipfs-microservice
         else
           cd ipfs-microservice
           git reset --hard
@@ -50,7 +50,7 @@ jobs:
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
-        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
     - name: Push Docker Image
       run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/ipfs-microservice:latest
