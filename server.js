@@ -10,7 +10,7 @@ import { promisify } from "util";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5001;
 
 // AWS S3 Client (v3)
 const s3 = new S3Client({
