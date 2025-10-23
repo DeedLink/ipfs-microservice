@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    image: rasindudulshansiriwardhana/ipfs-microservice:latest
     container_name: ipfs-microservice
     ports:
       - "5001:5001"
