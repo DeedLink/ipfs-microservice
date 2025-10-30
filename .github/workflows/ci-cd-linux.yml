@@ -25,13 +25,6 @@ jobs:
     - name: Install dependencies
       run: yarn install --frozen-lockfile
 
-    # --- Install Docker Compose (official plugin) ---
-    - name: Install Docker Compose
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y docker-compose-plugin
-        docker compose version
-
     # --- Clone or update microservice locally ---
     - name: Clone or Update ipfs-microservice Repository
       run: |
