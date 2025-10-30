@@ -66,15 +66,12 @@ jobs:
         username: ${{ secrets.LINUX_SERVER_USER }}
         key: ${{ secrets.LINUX_SERVER_SSH_KEY }}
         script: |
-          # Set deployment directory
           DEPLOY_DIR=/home/ec2-user/deedlink-deployments
           mkdir -p $DEPLOY_DIR
           cd $DEPLOY_DIR
 
-          # Install git if not installed
           sudo yum install git -y
 
-          # Clone or update repository
           if [ ! -d "ipfs-microservice" ]; then
             git clone https://github.com/DeedLink/ipfs-microservice.git ipfs-microservice
           fi
@@ -82,14 +79,12 @@ jobs:
           git fetch origin
           git reset --hard origin/master
 
-          # Add environment variables
           echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" > .env
           echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
           echo "AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }}" >> .env
           echo "PORT=5001" >> .env
 
-          # Run Docker Compose
           docker-compose pull
           docker-compose down
           docker-compose up -d --remove-orphans
